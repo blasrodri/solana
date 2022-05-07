@@ -497,8 +497,6 @@ impl Rocks {
     }
 
     fn put_cf(&self, cf: &ColumnFamily, key: &[u8], value: &[u8]) -> Result<()> {
-        dbg!(key);
-        dbg!(value);
         self.db.put_cf(cf, key, value)?;
         Ok(())
     }
@@ -571,7 +569,7 @@ impl Rocks {
 }
 
 pub trait Column {
-    type Index;
+    type Index: core::fmt::Debug;
 
     fn key_size() -> usize {
         std::mem::size_of::<Self::Index>()
@@ -1396,6 +1394,8 @@ where
     }
 
     pub fn put_bytes(&self, key: C::Index, value: &[u8]) -> Result<()> {
+        dbg!(C::NAME);
+        dbg!((&key, value));
         let is_perf_enabled = maybe_enable_rocksdb_perf(
             self.column_options.rocks_perf_sample_interval,
             &self.column_options.perf_write_counter,
@@ -1440,6 +1440,7 @@ where
     }
 
     pub fn put(&self, key: C::Index, value: &C::Type) -> Result<()> {
+        dbg!(C::NAME);
         let is_perf_enabled = maybe_enable_rocksdb_perf(
             self.column_options.rocks_perf_sample_interval,
             &self.column_options.perf_write_counter,
