@@ -497,6 +497,8 @@ impl Rocks {
     }
 
     fn put_cf(&self, cf: &ColumnFamily, key: &[u8], value: &[u8]) -> Result<()> {
+        dbg!(key);
+        dbg!(value);
         self.db.put_cf(cf, key, value)?;
         Ok(())
     }
